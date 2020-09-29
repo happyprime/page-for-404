@@ -2,6 +2,8 @@
 
 namespace PageFor404;
 
+add_filter( 'allowed_options', __NAMESPACE__ . '\filter_allowed_options' );
+add_action( 'admin_init', __NAMESPACE__ . '\add_settings_fields' );
 add_filter( 'template_include', __NAMESPACE__ . '\template_include' );
 
 /**
@@ -30,6 +32,47 @@ function setup_post_global() {
 
 	// I feel horrible for doing this, but it's okay.
 	$post = get_post( $page_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+}
+
+/**
+ * Filter the allowed options handled by default in wp-admin/options.php
+ * so that ours is automatically saved.
+ *
+ * @param array $options A list of allowed options.
+ * @return array A modified list of allowed options.
+ */
+function filter_allowed_options( $options ) {
+	$options['reading'][] = 'page_for_404';
+
+	return $options;
+}
+
+/**
+ * Add a settings field to capture the page used for 404 content.
+ */
+function add_settings_fields() {
+	add_settings_field( 'pf4-option', 'Page for 404', __NAMESPACE__ . '\view_settings_field', 'reading', 'default' );
+}
+
+/**
+ * Output the markup used to capture the page for 404 settings field.
+ */
+function view_settings_field() {
+	?>
+	<label for="page_for_404">
+	<?php
+	wp_dropdown_pages(
+		array(
+			'name'              => 'page_for_404',
+			'echo'              => true,
+			'show_option_none'  => esc_attr__( '&mdash; Select &mdash;' ),
+			'option_none_value' => 0,
+			'selected'          => absint( get_option( 'page_for_404', 0 ) ),
+		)
+	);
+	?>
+	<p class="description">The page that should be used to display content on the site's 404 page.</p>
+	<?php
 }
 
 /**
