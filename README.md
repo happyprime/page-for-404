@@ -7,7 +7,7 @@ The setting is handled similar to the default `page_on_front` and `page_for_post
 Once a page is configured as the page for 404, the plugin tries to find a matching PHP template that will handle the request in this order:
 
 * In the site's active theme:
-  * `page-for-404.php
+  * `page-for-404.php`
   * `page-{the-configured-page-slug}.php`
   * `page-{the-configured-page-id}.php`
 * And, if none of those is available, in this plugin:
