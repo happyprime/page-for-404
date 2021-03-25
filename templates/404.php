@@ -5,7 +5,7 @@
 get_header();
 
 ?>
-<main id="site-content" role="main">
+<main id="site-content" class="site-main" role="main">
 	<article <?php post_class(); ?>>
 		<header class="entry-header has-text-align-center">
 			<div class="entry-header-inner section-inner medium">
